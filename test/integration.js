@@ -86,17 +86,12 @@ describe('handlers', function () {
   })
 
   it('write big file', function () {
-    const data = 'A'.repeat(5000)
+    const data = 'A'.repeat(100000)
     const fileName = 'bigFile'
     const filePath = path.join(mnt, fileName)
     fs.writeFileSync(filePath, data)
     assert.ok(fs.existsSync(filePath))
 
-    const buf = Buffer.alloc(5000)
-    buf.write(data)
-
-    // console.log('size:', fs.readFileSync(filePath).length)
-    assert.strictEqual(fs.readFileSync(filePath).toString(), buf.toString())
-
+    assert.strictEqual(fs.readFileSync(filePath).length, data.length)
   })
 })
