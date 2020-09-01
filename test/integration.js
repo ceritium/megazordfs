@@ -76,9 +76,27 @@ describe('handlers', function () {
   })
 
   it('write small file', function () {
+    const data = 'hello world'
     const fileName = 'smallFile'
     const filePath = path.join(mnt, fileName)
-    fs.writeFileSync(filePath, null)
+    fs.writeFileSync(filePath, data)
     assert.ok(fs.existsSync(filePath))
+
+    assert.strictEqual(fs.readFileSync(filePath).toString(), data)
+  })
+
+  it('write big file', function () {
+    const data = 'A'.repeat(5000)
+    const fileName = 'bigFile'
+    const filePath = path.join(mnt, fileName)
+    fs.writeFileSync(filePath, data)
+    assert.ok(fs.existsSync(filePath))
+
+    const buf = Buffer.alloc(5000)
+    buf.write(data)
+
+    // console.log('size:', fs.readFileSync(filePath).length)
+    assert.strictEqual(fs.readFileSync(filePath).toString(), buf.toString())
+
   })
 })
