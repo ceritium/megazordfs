@@ -6,10 +6,10 @@ const path = require('path')
 const createMountpoint = require('./fixtures/mnt')
 const mnt = createMountpoint()
 
-const { spawn, exec } = require('child_process')
-const volume = process.pid
+const { spawn, execSync } = require('child_process')
+const volume = `vol-${process.pid}`
 
-exec(`node cli volumes create ${volume} blockA blockB`)
+execSync(`node cli volumes create ${volume} blockA blockB`)
 const megazordfs = spawn('node', ['cli', 'volumes', 'start', volume, mnt])
 
 megazordfs.stdout.on('data', (data) => {
@@ -48,5 +48,15 @@ describe('handlers', function () {
 
     const dir = fs.opendirSync(mnt)
     assert.strictEqual(dir.readSync().name, 'dirA')
+  })
+
+  it('mkdir nested', function () {
+    const dirPath = path.join(mnt, 'dir')
+    fs.mkdirSync(dirPath, { recursive: true })
+    const subDirPath = path.join(dirPath, 'subDir')
+    fs.mkdirSync(subDirPath)
+
+    const dir = fs.opendirSync(dirPath)
+    assert.strictEqual(dir.readSync().name, '/subDir')
   })
 })
