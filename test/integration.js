@@ -11,6 +11,7 @@ const volume = `vol-${process.pid}`
 
 execSync(`node cli volumes create ${volume} blockA blockB`)
 const megazordfs = spawn('node', ['cli', 'volumes', 'start', volume, mnt])
+console.log(`node cli volumes start ${volume} ${mnt}`)
 
 megazordfs.stdout.on('data', (data) => {
   console.log(`stdout: ${data}`)
@@ -19,6 +20,15 @@ megazordfs.stdout.on('data', (data) => {
 megazordfs.stderr.on('data', (data) => {
   console.error(`stderr: ${data}`)
 })
+
+megazordfs.on('exit', (data) => {
+  console.error(`exit: ${data}`)
+})
+
+megazordfs.on('close', (data) => {
+  console.error(`error: ${data}`)
+})
+
 
 function sleep (ms) {
   return new Promise((resolve) => {
@@ -32,22 +42,22 @@ describe('handlers', function () {
   })
 
   after(function () {
-    megazordfs.kill()
+    megazordfs.kill('SIGINT')
   })
 
   it('mkdir', function () {
-    const filePath = path.join('/', 'dirA')
+    const filePath = path.join('/', 'dir')
     const hostFilePath = path.join(mnt, filePath)
     fs.mkdirSync(hostFilePath)
   })
 
   it('readdir', function () {
-    const filePath = path.join('/', 'dirA')
+    const filePath = path.join('/', 'dir')
     const hostFilePath = path.join(mnt, filePath)
     fs.mkdirSync(hostFilePath, { recursive: true })
 
     const dir = fs.opendirSync(mnt)
-    assert.strictEqual(dir.readSync().name, 'dirA')
+    assert.strictEqual(dir.readSync().name, 'dir')
   })
 
   it('mkdir nested', function () {
@@ -55,8 +65,20 @@ describe('handlers', function () {
     fs.mkdirSync(dirPath, { recursive: true })
     const subDirPath = path.join(dirPath, 'subDir')
     fs.mkdirSync(subDirPath)
+    assert.ok(fs.existsSync(dirPath))
+  })
 
-    const dir = fs.opendirSync(dirPath)
-    assert.strictEqual(dir.readSync().name, '/subDir')
+  it('write empty file', function () {
+    const fileName = 'emptyFile'
+    const filePath = path.join(mnt, fileName)
+    fs.writeFileSync(filePath, null)
+    assert.ok(fs.existsSync(filePath))
+  })
+
+  it('write small file', function () {
+    const fileName = 'smallFile'
+    const filePath = path.join(mnt, fileName)
+    fs.writeFileSync(filePath, null)
+    assert.ok(fs.existsSync(filePath))
   })
 })
