@@ -1,3 +1,4 @@
+const Fuse = require('fuse-native')
 const assert = require('assert')
 const { describe, it, before, after, afterEach } = require('mocha')
 const fs = require('fs')
@@ -104,7 +105,7 @@ describe('handlers', function () {
     try {
       fs.rmdirSync(dirPath)
     } catch (err) {
-      assert.strictEqual(err.code, 'ERANGE')
+      assert.strictEqual(err.errno, Fuse.ENOTEMPTY)
       assert.strictEqual(err.syscall, 'rmdir')
     }
   })
