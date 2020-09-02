@@ -1,5 +1,5 @@
 const assert = require('assert')
-const { describe, it, before, beforeEach, after } = require('mocha')
+const { describe, it, before, after, afterEach } = require('mocha')
 const fs = require('fs')
 const path = require('path')
 
@@ -29,7 +29,6 @@ megazordfs.on('close', (data) => {
   console.error(`error: ${data}`)
 })
 
-
 function sleep (ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
@@ -37,11 +36,12 @@ function sleep (ms) {
 }
 
 describe('handlers', function () {
-  before(async function () {
+  before(async () => {
     await sleep(1000)
   })
 
-  after(function () {
+  after(() => {
+    fs.rmdirSync(mnt, { recursive: true })
     megazordfs.kill('SIGINT')
   })
 
@@ -58,6 +58,55 @@ describe('handlers', function () {
 
     const dir = fs.opendirSync(mnt)
     assert.strictEqual(dir.readSync().name, 'dir')
+  })
+
+
+  it('unlink a file', function () {
+    const filePath = path.join(mnt, 'file')
+    fs.writeFileSync(filePath, null)
+    assert.ok(fs.existsSync(filePath))
+
+    fs.unlinkSync(filePath)
+    assert.ok(!fs.existsSync(filePath))
+  })
+
+  it('unlink a dir', function () {
+    const dirPath = path.join(mnt, 'dir')
+    fs.mkdirSync(dirPath, { recursive: true })
+    assert.ok(fs.existsSync(dirPath))
+
+    try {
+      fs.unlinkSync(dirPath)
+    } catch (err) {
+      assert.strictEqual(err.code, 'EPERM')
+      assert.strictEqual(err.syscall, 'unlink')
+    }
+  })
+
+  it('rmdir empty dir', function () {
+    const dirPath = path.join(mnt, 'emptyDir')
+    fs.mkdirSync(dirPath, { recursive: true })
+    assert.ok(fs.existsSync(dirPath))
+
+    fs.rmdirSync(dirPath)
+    assert.ok(!fs.existsSync(dirPath))
+  })
+
+  it('rmdir non empty dir', function () {
+    const dirPath = path.join(mnt, 'noEmptyDir')
+    fs.mkdirSync(dirPath, { recursive: true })
+    assert.ok(fs.existsSync(dirPath))
+
+    const filePath = path.join(dirPath, 'file')
+    fs.writeFileSync(filePath, null)
+    assert.ok(fs.existsSync(filePath))
+
+    try {
+      fs.rmdirSync(dirPath)
+    } catch (err) {
+      assert.strictEqual(err.code, 'ERANGE')
+      assert.strictEqual(err.syscall, 'rmdir')
+    }
   })
 
   it('mkdir nested', function () {
@@ -93,5 +142,6 @@ describe('handlers', function () {
     assert.ok(fs.existsSync(filePath))
 
     assert.strictEqual(fs.readFileSync(filePath).length, data.length)
+    fs.unlinkSync(filePath)
   })
 })

@@ -6,14 +6,18 @@ const { handlers } = require('../../lib/handlers.js')
 exports.command = 'start <volume> <mountPath>'
 exports.aliases = []
 exports.desc = 'Start a volume'
-exports.builder = {}
+exports.builder = {
+  debug: {
+    default: false
+  }
+}
 exports.handler = function (argv) {
-  start(argv.volume, argv.mountPath)
+  console.log(argv)
+  start(argv.volume, argv.mountPath, argv.debug === 'true')
 }
 
-const fuseOpts = { force: true, mkdir: true, displayFolder: true, allowOther: true, debug: false }
-
-const start = function (volumeName, mountPath) {
+const start = function (volumeName, mountPath, debug) {
+  const fuseOpts = { force: true, mkdir: true, displayFolder: true, allowOther: true, debug: debug }
   dbVolumes.findOne({ _id: volumeName }, (err, volume) => {
     if (err) console.log(err)
 
