@@ -23,7 +23,7 @@ const start = function (volumeName, mountPath, debug) {
 
     if (volume) {
       console.log(volume)
-      const fuse = new Fuse(mountPath, handlers(volumeName), fuseOpts)
+      const fuse = new Fuse(mountPath, handlers(volume), fuseOpts)
       fuse.mount()
 
       process.once('SIGINT', function () {
