@@ -66,6 +66,18 @@ describe('handlers', function () {
     assert.strictEqual(dir.readSync().name, 'dir')
   })
 
+  it('ftruncate', function () {
+    const filePath = path.join(mnt, 'file')
+    fs.writeFileSync(filePath, 'hello world')
+
+    assert.strictEqual(fs.readFileSync(filePath).toString(), 'hello world')
+    const fd = fs.openSync(filePath, 'r+')
+    fs.ftruncateSync(fd, 5)
+    fs.closeSync(fd)
+
+    assert.strictEqual(fs.readFileSync(filePath).toString(), 'hello')
+  })
+
   it('unlink a file', function () {
     const filePath = path.join(mnt, 'file')
     fs.writeFileSync(filePath, null)
