@@ -2,7 +2,7 @@
 
 Fuse based filesystem that creates a virtual volumen backed by several devices.
 
-Yes, like a megazord
+Yes, like the megazord.
 
 ![Megazordfs gif](../media/megazordfs.gif?raw=true)
 
