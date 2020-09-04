@@ -1,24 +1,24 @@
 {
   "name": "megazordfs",
-  "description": "bla bla bla",
+  "description": "Fuse based filesystem that creates a virtual volumen backed by several devices.",
   "author": "José Galisteo Ruiz",
   "license": "ISC",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/ceritium/megazordfs/issues"
   },
-  "homepage": "",
+  "homepage": "https://github.com/ceritium/megazordfs",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:ceritium/megazordfs.git"
   },
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "scripts": {
     "autofix": "standard --fix",
     "test": "mocha"
   },
   "bin": {
-    "fuse-torrent": "./cli.js"
+    "megazordfs": "./cli.js"
   },
   "dependencies": {
     "fs": "0.0.1-security",

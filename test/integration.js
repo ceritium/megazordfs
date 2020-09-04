@@ -15,9 +15,9 @@ fs.mkdirSync(mntB, { recursive: true })
 const { spawn, execSync } = require('child_process')
 const volume = `vol-${process.pid}`
 
-execSync(`node cli volumes create ${volume} ${mntA} ${mntB}`)
-const megazordfs = spawn('node', ['cli', 'volumes', 'start', volume, mnt])
-console.log(`node cli volumes start ${volume} ${mnt}`)
+execSync(`node cli create ${volume} ${mntA} ${mntB}`)
+const megazordfs = spawn('node', ['cli', 'start', volume, mnt])
+console.log(`node cli start ${volume} ${mnt}`)
 
 megazordfs.stdout.on('data', (data) => {
   console.log(`stdout: ${data}`)
