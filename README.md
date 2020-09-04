@@ -12,11 +12,13 @@ It is a working progress project in a very early stage of development, if you us
 
 ## Install
 
+```bash
 $ npm install -g megazorfs
+```
 
 You also need to install fuse. See [this link](https://github.com/mafintosh/fuse-bindings#requirements) for more info.
 
-```
+```bash
 mkdir -p /tmp/blockA /tmp/blockB /tmp/blockC # Creates dummy storage "blocks"
 
 megazordfs --help
