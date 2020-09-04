@@ -17,7 +17,9 @@ $ npm install -g megazorfs
 You also need to install fuse. See [this link](https://github.com/mafintosh/fuse-bindings#requirements) for more info.
 
 ```
-node cli
-node cli volumes create VOL1 blockA blockB # Creatr VOL1 with dummy blocks, in the future it will be the storage
-node cli volumes start VOL1 /tmp/megazordfs
+mkdir -p /tmp/blockA /tmp/blockB /tmp/blockC # Creates dummy storage "blocks"
+
+megazordfs --help
+megazordfs create VOL1 /tmp/blockA /tmp/blockB /tmp/blockC
+megazordfs start VOL1 /tmp/megazordfs
 ```
