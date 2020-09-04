@@ -1,7 +1,7 @@
 const Fuse = require('fuse-native')
 
-const { dbVolumes } = require('../../lib/db.js')
-const { handlers } = require('../../lib/handlers.js')
+const { dbVolumes } = require('../lib/db')
+const { handlers } = require('../lib/handlers')
 
 exports.command = 'start <volume> <mountPath>'
 exports.aliases = []

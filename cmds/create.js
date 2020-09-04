@@ -1,4 +1,4 @@
-const dbVolumes = require('../../lib/db.js').dbVolumes
+const dbVolumes = require('../lib/db').dbVolumes
 
 exports.command = 'create <name> [blocks...]'
 exports.desc = 'Create a volume named <name>'
