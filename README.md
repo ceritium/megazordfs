@@ -1,6 +1,8 @@
 # MegazordFS
 
-Under development
+## WARNING
+
+It is a working progress project in a very early stage of development, if you use it you can loose your files.
 
 ```
 node cli
