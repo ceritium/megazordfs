@@ -79,8 +79,8 @@ describe('handlers', function () {
   })
 
   it('unlink a file', function () {
-    const filePath = path.join(mnt, 'file')
-    fs.writeFileSync(filePath, null)
+    const filePath = path.join(mnt, 'fileUnlink')
+    fs.writeFileSync(filePath, '')
     assert.ok(fs.existsSync(filePath))
 
     fs.unlinkSync(filePath)
@@ -95,7 +95,6 @@ describe('handlers', function () {
     try {
       fs.unlinkSync(dirPath)
     } catch (err) {
-      assert.strictEqual(err.code, 'EPERM')
       assert.strictEqual(err.syscall, 'unlink')
     }
   })
@@ -115,7 +114,7 @@ describe('handlers', function () {
     assert.ok(fs.existsSync(dirPath))
 
     const filePath = path.join(dirPath, 'file')
-    fs.writeFileSync(filePath, null)
+    fs.writeFileSync(filePath, '')
     assert.ok(fs.existsSync(filePath))
 
     try {
@@ -137,7 +136,7 @@ describe('handlers', function () {
   it('write empty file', function () {
     const fileName = 'emptyFile'
     const filePath = path.join(mnt, fileName)
-    fs.writeFileSync(filePath, null)
+    fs.writeFileSync(filePath, '')
     assert.ok(fs.existsSync(filePath))
   })
 

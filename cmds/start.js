@@ -17,7 +17,7 @@ exports.handler = function (argv) {
 }
 
 const start = function (volumeName, mountPath, debug) {
-  const fuseOpts = { force: true, mkdir: true, displayFolder: true, allowOther: true, debug: debug }
+  const fuseOpts = { force: true, mkdir: true, displayFolder: true, debug: debug }
   dbVolumes.findOne({ _id: volumeName }, (err, volume) => {
     if (err) console.log(err)
 
