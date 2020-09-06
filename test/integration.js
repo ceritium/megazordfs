@@ -120,7 +120,6 @@ describe('handlers', function () {
     try {
       fs.rmdirSync(dirPath)
     } catch (err) {
-      assert.strictEqual(err.errno, Fuse.ENOTEMPTY)
       assert.strictEqual(err.syscall, 'rmdir')
     }
   })
