@@ -1,5 +1,7 @@
 # MegazordFS
 
+[![npm version](https://badge.fury.io/js/megazordfs.svg)](https://badge.fury.io/js/megazordfs)
+
 Fuse based filesystem that creates a virtual volumen backed by several devices.
 
 Yes, like the megazord.
