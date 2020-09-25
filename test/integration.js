@@ -1,4 +1,3 @@
-const Fuse = require('fuse-native')
 const assert = require('assert')
 const { describe, it, before, after } = require('mocha')
 const fs = require('fs')
