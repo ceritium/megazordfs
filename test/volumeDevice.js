@@ -1,7 +1,7 @@
 const assert = require('assert')
 const { it } = require('mocha')
 
-const { stats, virtualDeviceSize, smallerStripe, buildPool } = require('../lib/volumeDevice')
+const { stats, virtualDeviceForBlockStats, smallerStripe, buildPool } = require('../lib/volumeDevice')
 
 it('stats', () => {
   stats(['.'])
@@ -70,7 +70,7 @@ it('virtualDeviceSize', () => {
     }
   ]
 
-  const virtualDevice = virtualDeviceSize(blockStats, 2)
+  const virtualDevice = virtualDeviceForBlockStats(blockStats, 2)
   assert.strictEqual(virtualDevice.totalSize(), 500)
   assert.strictEqual(virtualDevice.freeSpace(), 300)
 })
